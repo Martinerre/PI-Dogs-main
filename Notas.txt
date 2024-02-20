@@ -1,0 +1,19 @@
+Database
+MODELO 1 | Dogs
+
+ID. UUID
+Imagen. VARCHAR(100) NOT NULL,
+Nombre. VARCHAR(100) NOT NULL,
+Altura. INTEGER
+Peso. INTEGER
+Años de vida.INTEGER
+
+MODELO 2 | Temperaments
+
+ID.*
+Nombre.*
+
+
+https://api.thedogapi.com/v1/images/search?limit=15&api_key=${API_KEY}
+https://api.thedogapi.com/v1/images/${id}
+https://api.thedogapi.com/v1/breeds/search?q=${name}
