@@ -1,12 +1,15 @@
 const server = require('./src/app.js');
 const axios = require('axios');
 const { conn } = require('./src/db.js');
-const {Dog} = require('../api/src/db.js')
+const { Dog } = require('../api/src/db.js')
 
 // require("./src/db.js") // Para prueba datos DB
 
 //const URL = 'https://api.thedogapi.com/v1/breeds' 
-const URL = 'https://api.thedogapi.com/v1/images/search?limit=15&api_key=live_TnHJR3xTl8Xm9eFPiVyrbxLdguvnd8ugbO8js75d8CgE0zxKTQIxrtP2W1UigiZP'
+//const URL = 'https://api.thedogapi.com/v1/images/search?limit=15&api_key=live_TnHJR3xTl8Xm9eFPiVyrbxLdguvnd8ugbO8js75d8CgE0zxKTQIxrtP2W1UigiZP'
+//const URL = 'https://api.thedogapi.com/v1/images/search?limit=10'
+const URL = 'https://api.thedogapi.com/v1/images/search?limit=15&api_key=${2}'
+// const URL = 'https://api.thedogapi.com/v1/images/0XYvRd7oD'
 // ej: ,
 // {
 //   "weight":{"imperial":"6 - 13","metric":"3 - 6"},"height":{"imperial":"9 - 11.5","metric":"23 - 29"},
@@ -14,13 +17,14 @@ const URL = 'https://api.thedogapi.com/v1/images/search?limit=15&api_key=live_Tn
 
 const port = 3001;
 
+
 const apiToDbb = async () => {
   console.log('api to db');
   try {
     let response = await axios.get(URL);
     response.map(async (el) => {
       await Dog.create({
-        id: el.breeds.id,
+        id: el.id,
         name: el.name,
         image: el.url,
         altura: el.breeds.height.metric,
@@ -35,10 +39,11 @@ const apiToDbb = async () => {
 }
 
 // Syncing all the models at once.
-conn.sync({ force: false }).then(() => {
-  server.listen(port, () => {
-    console.log(`Server listening at ${port}`); // eslint-disable-line no-console
+conn.sync({ force: false })
+  .then(() => {
+    server.listen(port, () => {
+      console.log(`Server listening at port ${port}`); // eslint-disable-line no-console
+    });
   });
-});
 
-apiToDbb(URL)
+apiToDbb(URL);
